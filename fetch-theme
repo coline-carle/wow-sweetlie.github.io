@@ -1,0 +1,3 @@
+#!/bin/sh
+git fetch hugo-tranquilpeak-theme
+git subtree add --prefix themes/hugo-tranquilpeak-theme hugo-tranquilpeak-theme sweetlie --squash
