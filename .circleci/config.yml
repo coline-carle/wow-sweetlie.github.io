@@ -3,7 +3,9 @@ jobs:
   build:
     docker:
       - image: golang:1.8.0
+
       working_directory: ~/blog
+
       steps:
         - run: go get -v github.com/spf13/hugo
         - checkout
