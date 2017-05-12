@@ -19,8 +19,7 @@ jobs:
       - run: wget https://raw.githubusercontent.com/X1011/git-directory-deploy/master/deploy.sh && chmod +x deploy.sh
 
       - add_ssh_keys:
-        fingerprints:
-          - "96:84:40:4a:92:1e:e7:72:5e:a9:b6:77:dc:89:96:d1"
+        fingerprints: "96:84:40:4a:92:1e:e7:72:5e:a9:b6:77:dc:89:96:d1"
       - deploy:
         command: ./deploy.sh
 
