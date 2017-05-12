@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Sweet Code Dream</title>
+    <link>http://sweetlie.today/post/</link>
+    <description>Recent content in Posts on Sweet Code Dream</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>fr-FR</language>
+    <lastBuildDate>Fri, 12 May 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://sweetlie.today/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Récupération des données de l&#39;hôtel des ventes, Partie 1</title>
+      <link>http://sweetlie.today/2017/05/r%C3%A9cup%C3%A9ration-des-donn%C3%A9es-de-lh%C3%B4tel-des-ventes-partie-1/</link>
+      <pubDate>Fri, 12 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://sweetlie.today/2017/05/r%C3%A9cup%C3%A9ration-des-donn%C3%A9es-de-lh%C3%B4tel-des-ventes-partie-1/</guid>
+      <description>Bon, j&amp;rsquo;en ai un peu marre de la limitation de l&amp;rsquo;API de trafic de TradeskillMaster sur son API, qui plus est j&amp;rsquo;ai envie de faire joujou et potentiellement publier mes résultats, pas sûr que la société apprécie mon usage de ses données. Mais quitte à faire un truc pas forcement passionnant au départ, autant y rajouter un peu de fun : le langage de programmation Elixir.
+Elixir Késako ?
+De la programmation fonctionnelle, avec une syntaxe sexy fonctionnant sur la VM BEAM, du langage erlang accès programmation concurrentielle.</description>
+    </item>
+    
+  </channel>
+</rss>

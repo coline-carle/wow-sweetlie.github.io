@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Sweet Code Dream</title>
+    <link>http://sweetlie.today/tags/</link>
+    <description>Recent content in Tags on Sweet Code Dream</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>fr-FR</language>
+    <lastBuildDate>Fri, 12 May 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://sweetlie.today/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Elixir</title>
+      <link>http://sweetlie.today/tags/elixir/</link>
+      <pubDate>Fri, 12 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://sweetlie.today/tags/elixir/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Warcraft</title>
+      <link>http://sweetlie.today/tags/warcraft/</link>
+      <pubDate>Fri, 12 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://sweetlie.today/tags/warcraft/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
