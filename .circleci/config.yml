@@ -21,7 +21,8 @@ jobs:
       - add_ssh_keys:
           fingerprints: "96:84:40:4a:92:1e:e7:72:5e:a9:b6:77:dc:89:96:d1"
       - deploy:
-        command: ./deploy.sh
+          name: "deploy to github pages"
+          command: ./deploy.sh
 
 
 
