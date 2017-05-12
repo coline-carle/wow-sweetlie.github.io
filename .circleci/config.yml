@@ -3,9 +3,19 @@ jobs:
   build:
     docker:
       - image: golang:1.8.0
+    branches:
+      only:
+        - master
     working_directory: ~/blog
+    environnment:
+      GIT_DEPLOY_DIR: public
+      GIT_DEPLOY_BRANCH: gh-pages
     steps:
       - checkout
       - run: go get -v github.com/spf13/hugo
       - run: hugo
+      - run: git --global user.name "circle-ci"
+      - run: git --global user.email "circle-ci@circle-ci.org"
+      - run: wget https://raw.githubusercontent.com/X1011/git-directory-deploy/master/deploy.sh
+      - run: sh deploy.sh
 
