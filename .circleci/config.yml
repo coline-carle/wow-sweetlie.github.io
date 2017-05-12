@@ -7,7 +7,7 @@ jobs:
       only:
         - master
     working_directory: ~/blog
-    environnment:
+    environment:
       GIT_DEPLOY_DIR: public
       GIT_DEPLOY_BRANCH: gh-pages
     steps:
