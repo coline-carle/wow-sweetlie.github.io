@@ -11,14 +11,18 @@ jobs:
       GIT_DEPLOY_DIR: public
       GIT_DEPLOY_BRANCH: gh-pages
     steps:
-      - add_ssh_keys:
-        fingerprints:
-          - "96:84:40:4a:92:1e:e7:72:5e:a9:b6:77:dc:89:96:d1"
       - checkout
       - run: go get -v github.com/spf13/hugo
       - run: hugo
       - run: git config --global user.name "circle-ci"
       - run: git config --global user.email "circle-ci@circle-ci.org"
       - run: wget https://raw.githubusercontent.com/X1011/git-directory-deploy/master/deploy.sh && chmod +x deploy.sh
-      - run: ./deploy.sh
+
+      - add_ssh_keys:
+        fingerprints:
+          - "96:84:40:4a:92:1e:e7:72:5e:a9:b6:77:dc:89:96:d1"
+      - deploy:
+        command: ./deploy.sh
+
+
 
