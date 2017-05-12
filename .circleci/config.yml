@@ -5,11 +5,11 @@ jobs:
       - image: golang:1.8.0
     branches:
       only:
-        - master
+        - source
     working_directory: ~/blog
     environment:
       GIT_DEPLOY_DIR: public
-      GIT_DEPLOY_BRANCH: gh-pages
+      GIT_DEPLOY_BRANCH: master
     steps:
       - checkout
       - run: go get -v github.com/spf13/hugo
