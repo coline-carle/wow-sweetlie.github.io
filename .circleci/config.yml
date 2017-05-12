@@ -4,6 +4,9 @@ jobs:
     docker:
       - image: golang:1.8.0
       working_dir: ~/blog
+      branches:
+        only:
+        - travis-integreation
       steps:
         - run: go get -v github.com/spf13/hugo
         - checkout
