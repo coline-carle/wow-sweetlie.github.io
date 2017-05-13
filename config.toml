@@ -55,6 +55,7 @@ googleAnalytics = "UA-96373440-2"
 
 
 [params]
+  favicon = "/favicon.png"
   dateFormat = "2 January 2006"
   coverImage = "cover.jpg"
   sidebarBehavior = 2
