@@ -16,6 +16,7 @@ jobs:
       - run: hugo
       - run: git config --global user.name "circle-ci"
       - run: git config --global user.email "circle-ci@circle-ci.org"
+      - run echo "sweetlie.today" > "$GIT_DEPLOY_DIR/CNAME"
       - run: wget https://raw.githubusercontent.com/X1011/git-directory-deploy/master/deploy.sh && chmod +x deploy.sh
 
       - add_ssh_keys:
