@@ -5,6 +5,7 @@ title = "Sweet Code Dream"
 theme = "hugo-tranquilpeak-theme"
 paginate = 7
 canonifyurls = true
+googleAnalytics = "UA-96373440-2"
 
 [permalinks]
   post = "/:year/:month/:slug/"
