@@ -23,7 +23,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Hugo 0.22-DEV">
     <meta name="theme" content="Tranquilpeak 0.3.1-BETA">
-    <title>Récupération des données de l&#39;hôtel des ventes, Partie 1</title>
+    <title>Réglage de la pression arrière</title>
     <meta name="author" content="Sweetlie">
     <meta name="keywords" content="">
 
@@ -31,21 +31,15 @@
     
 
     
-    <meta name="description" content="Bon, j&rsquo;en ai un peu marre de la limitation de l&rsquo;API de trafic de TradeskillMaster sur son API, qui plus est j&rsquo;ai envie de faire joujou et potentiellement publier mes résultats, pas sûr que la société apprécie mon usage de ses données. Mais quitte à faire un truc pas forcement passionnant au départ, autant y rajouter un peu de fun : le langage de programmation Elixir.
-Elixir Késako ?
-De la programmation fonctionnelle, avec une syntaxe sexy fonctionnant sur la VM BEAM, du langage erlang accès programmation concurrentielle.">
-    <meta property="og:description" content="Bon, j&rsquo;en ai un peu marre de la limitation de l&rsquo;API de trafic de TradeskillMaster sur son API, qui plus est j&rsquo;ai envie de faire joujou et potentiellement publier mes résultats, pas sûr que la société apprécie mon usage de ses données. Mais quitte à faire un truc pas forcement passionnant au départ, autant y rajouter un peu de fun : le langage de programmation Elixir.
-Elixir Késako ?
-De la programmation fonctionnelle, avec une syntaxe sexy fonctionnant sur la VM BEAM, du langage erlang accès programmation concurrentielle.">
+    <meta name="description" content="Dans mes applications très dépendantes de l&rsquo;API Battle.net, j&rsquo;ai une problématique importante: La limitation des requête, que ce soit la limite imposée par la société, la congestion du réseau où la non disponibilité du service. Grosso merdo un processus qui dit non, repasse plus tard, où attends un peu. Mine de rien le problème n&rsquo;est pas si simple que ça j&rsquo;ai beaucoup entendu le terme &ldquo;backpressure&rdquo;, certainement en référence à l&rsquo;algorithme de routage backpressure, j&rsquo;y pige pas grand-chose, mais la page Wikipédia est bien fournie, probablement un abus de langage, mais ça peut donner une approche de l&rsquo;idée et surtout le concept qui va nous intéresser : les queues.">
+    <meta property="og:description" content="Dans mes applications très dépendantes de l&rsquo;API Battle.net, j&rsquo;ai une problématique importante: La limitation des requête, que ce soit la limite imposée par la société, la congestion du réseau où la non disponibilité du service. Grosso merdo un processus qui dit non, repasse plus tard, où attends un peu. Mine de rien le problème n&rsquo;est pas si simple que ça j&rsquo;ai beaucoup entendu le terme &ldquo;backpressure&rdquo;, certainement en référence à l&rsquo;algorithme de routage backpressure, j&rsquo;y pige pas grand-chose, mais la page Wikipédia est bien fournie, probablement un abus de langage, mais ça peut donner une approche de l&rsquo;idée et surtout le concept qui va nous intéresser : les queues.">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="Récupération des données de l&#39;hôtel des ventes, Partie 1">
-    <meta property="og:url" content="/2017/05/r%C3%A9cup%C3%A9ration-des-donn%C3%A9es-de-lh%C3%B4tel-des-ventes-partie-1/">
+    <meta property="og:title" content="Réglage de la pression arrière">
+    <meta property="og:url" content="/2017/05/r%C3%A9glage-de-la-pression-arri%C3%A8re/">
     <meta property="og:site_name" content="Sweet Code Dream">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Sweet Code Dream">
-    <meta name="twitter:description" content="Bon, j&rsquo;en ai un peu marre de la limitation de l&rsquo;API de trafic de TradeskillMaster sur son API, qui plus est j&rsquo;ai envie de faire joujou et potentiellement publier mes résultats, pas sûr que la société apprécie mon usage de ses données. Mais quitte à faire un truc pas forcement passionnant au départ, autant y rajouter un peu de fun : le langage de programmation Elixir.
-Elixir Késako ?
-De la programmation fonctionnelle, avec une syntaxe sexy fonctionnant sur la VM BEAM, du langage erlang accès programmation concurrentielle.">
+    <meta name="twitter:description" content="Dans mes applications très dépendantes de l&rsquo;API Battle.net, j&rsquo;ai une problématique importante: La limitation des requête, que ce soit la limite imposée par la société, la congestion du réseau où la non disponibilité du service. Grosso merdo un processus qui dit non, repasse plus tard, où attends un peu. Mine de rien le problème n&rsquo;est pas si simple que ça j&rsquo;ai beaucoup entendu le terme &ldquo;backpressure&rdquo;, certainement en référence à l&rsquo;algorithme de routage backpressure, j&rsquo;y pige pas grand-chose, mais la page Wikipédia est bien fournie, probablement un abus de langage, mais ça peut donner une approche de l&rsquo;idée et surtout le concept qui va nous intéresser : les queues.">
     
     
 
@@ -173,18 +167,18 @@ ga('send', 'pageview');
             <div class="post-header main-content-wrap text-left">
   
     <h1 class="post-title" itemprop="headline">
-      Récupération des données de l&#39;hôtel des ventes, Partie 1
+      Réglage de la pression arrière
     </h1>
   
   <div class="postShorten-meta post-meta">
   
-    <time itemprop="datePublished" datetime="2017-05-12T00:00:00Z">
+    <time itemprop="datePublished" datetime="2017-05-24T00:00:00Z">
       
   
   
   
   
-    12 Mai 2017
+    24 Mai 2017
   
 
     </time>
@@ -197,92 +191,81 @@ ga('send', 'pageview');
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <p>Bon, j&rsquo;en ai un peu marre de la limitation de l&rsquo;API de trafic de TradeskillMaster sur son API, qui plus est j&rsquo;ai envie de faire joujou et potentiellement publier mes résultats, pas sûr que la société apprécie mon usage de ses données.
-Mais quitte à faire un truc pas forcement passionnant au départ, autant y rajouter un peu de fun : le langage de programmation Elixir.</p>
+              <p>Dans mes applications très dépendantes de l&rsquo;API Battle.net, j&rsquo;ai une problématique importante: La limitation des requête, que ce soit la limite imposée par la société, la congestion du réseau où la non disponibilité du service. Grosso merdo un processus qui dit non, repasse plus tard, où attends un peu. Mine de rien le problème n&rsquo;est pas si simple que ça j&rsquo;ai beaucoup entendu le terme &ldquo;backpressure&rdquo;, certainement en référence à l&rsquo;algorithme de routage <em><a href="https://en.wikipedia.org/wiki/Backpressure_routing">backpressure</a></em>, j&rsquo;y pige pas grand-chose, mais la page Wikipédia est bien fournie, probablement un abus de langage, mais ça peut donner une approche de l&rsquo;idée et surtout le concept qui va nous intéresser : les queues.</p>
 
-<p>Elixir Késako ?</p>
+<p>Voici un schéma sommaire de l&rsquo;architecture, on reste dans le contexte erlang, avec des processus indépendants, mais un peu de multi threading revient à la même idée.</p>
 
-<p>De la programmation fonctionnelle, avec une syntaxe sexy fonctionnant sur la VM BEAM, du langage erlang accès programmation concurrentielle.</p>
 
-<p>Hop mon premier morceau de programme Elixir :
 
+
+<div class="figure " >
   
-    
+    <img class="fig-img" src="http://sweetlie.today/images/basic_queue_workflow.png"  alt="Bassic Queue Workflow">
   
+   
+    <span class="caption">Bassic Queue Workflow</span>
   
+</div>
+
+
+<p>ok ! C&rsquo;est bien beau d&rsquo;avoir un mécanisme de régulation, encore faut il lui donner des règles. On a droit a 3600 req/h et un <em>burst</em> de 100 req/s. Mettons de côté le <em>burst</em> pour le moment et restons à 1 req/s. Je n&rsquo;ai pas trouvé de références intéressantes, mais on appelle ça un <em>ticker</em>, référence à notre cher organe le cœur. Dans notre exemple, on prends 1 req/s mais on peut se baser sur des algorithmes bien plus complexes comme celui de la librairie <a href="https://github.com/grempe/ex_rated">ex_rated</a>, qui essaye de coller au mieux aux algorithmes de limitation de débits des api sur la base de l&rsquo;algorithme <em><a href="https://en.wikipedia.org/wiki/Token_bucket">Token Bucket</a></em> ( Il existe une francisation horrible de ce terme « Seau à jetons »).</p>
+
+<p>Bref ! Admettons: j&rsquo;ai un ticker qui choisis la vitesse a laquelle consommer la queue et des processus qui vont tranquillement la remplir, à quels problème puis-je être confronté.</p>
+
+<ol>
+<li>Problème réseau : la requête n&rsquo;arrive pas à destination</li>
+<li>Requête mal formée : J&rsquo;essaye de récupérer par exemple l&rsquo;armurerie d&rsquo;un level 6; en vain</li>
+<li>L&rsquo;API Battle.net n&rsquo;est pas disponible, c&rsquo;est le cas pendant les maintenances souvent.</li>
+<li>J&rsquo;ai un résultat, mais pas ce à quoi je m&rsquo;attendais</li>
+<li>J&rsquo;ai atteint mon quota maximal de requêtes</li>
+<li>la queue se remplit plus vite qu&rsquo;elle ne se vide.</li>
+</ol>
+
+<p>Le point 6 révèle probablement une inconsistance dans les algorithmes, ou tout du moins un fonctionnement incohérent avec les quotas. Néanmoins, je préfère considérer le cas du processus fou qui viendrait monopoliser la queue. Changeons un peu de design.</p>
+
+
+
+
+<div class="figure " >
   
+    <img class="fig-img" src="http://sweetlie.today/images/workflow_with_subscribe.png"  alt="Workflow with subscribe">
   
+   
+    <span class="caption">Workflow with subscribe</span>
+  
+</div>
 
 
-<figure class="highlight ">
-  <figcaption>
-    
-      <span>battlenet.ex</span>
-    
-  </figcaption>
-  <table>
-    <tbody>
-      <tr>
-        <td class="gutter">
-          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre>
-        </td>
-        <td class="code">
-          <pre class=" code-highlight">~~~
-require Logger
+<p>Yep ! Plutôt d&rsquo;avoir des programmes qui vont empiler les requêtes sans avoir aucune connaissance de la pression qu&rsquo;ils exercent sur le réseau ou le quota, on insère un <em>scheduler</em>, qui va s&rsquo;adapter et demander X events max pour chaque processus. Ça parait un peu plus compliqué du coup, mais si à la place on avait un <em>event fuck off</em> la queue est plaine, renvoyé à X processus qu&rsquo;ils devront gérer chacun de leur côté: c&rsquo;est bien pire !</p>
 
-defmodule BattleNET do
-  defmodule AuctionHouseSnapshot do
-    defmodule Snapshot do
-      defstruct  [:lastModified, :url]
-    end
+<p>Point numéro 2:  ce n&rsquo;est pas vraiment une erreur, <a href="https://fr.wikipedia.org/wiki/Erreur_HTTP_404">l&rsquo;erreur 404</a> doit être attendue est traité convenablement, ça veut probablement dire que beaucoup de code d&rsquo;erreurs auxquels je ne m&rsquo;attends pas vont passer à la trappe, ce qui implique que j&rsquo;ai un bonne gestion des rapports d&rsquo;erreurs le temps que j&rsquo;ai fait le tour de toutes les réponses possibles</p>
 
-    def get(region, realm, params \\ []) do
-      BattleNET.get(region, &#34;wow/auction/data/&#34; &lt;&gt; realm, params)
-      |&gt; Map.get(:body)
-      |&gt; Poison.decode!(as: %{&#34;files&#34; =&gt; [%Snapshot{}]})
-    end
-  end
+<p>Point numéro 4: C&rsquo;est que je ne gère pas correctement les réponses de l&rsquo;API, un petit rapport d&rsquo;erreur avant de terminer le processus proprement.</p>
+
+<p>Reste le point numéro 1. auquel ont peut associer certaines erreurs du type erreur 500 (<em>[Internal Server Error]</em>), OK la requête n&rsquo;a pas marché on la retente. Disons 3 fois. Problème : si il y a beaucoup d&rsquo;erreurs les erreurs vont monopoliser 75% des appels ! Là encore, on va faire appel à un algorithme réseau bien connu <em><a href="https://en.wikipedia.org/wiki/Exponential_backoff">Exponential Backoff Algorithm</a></em>, qui va tout simplement de plus en plus espacer chaque erreur.</p>
+
+<p>Ça, c&rsquo;est une erreur ponctuelle. Et pour le blackout total de l&rsquo;API ou du réseau ? Pas vraiment la peine de spammer le réseau de requêtes qui n&rsquo;arriverons pas ! Je vais faire appel à un design pattern tout simple un <em><a href="https://en.wikipedia.org/wiki/Circuit_breaker_design_pattern">Circuit Breaker</a></em>, un petit switch en amont des requêtes qui lorsque le réseau est hs va tout simplement court-circuiter les appels par un bon taggle dans les règles de l&rsquo;art. Comment déterminer si le circuit est hs ? Si pour une <em>Time Frame</em> le pourcentage de paquet retournant une erreur est trop élevé, l&rsquo;API est hs. On met tout en pause, on met en place un processus de ping qui va contrôler l&rsquo;état de l&rsquo;API et fermer (oui le pattern vient de l&rsquo;électricité hein !) le circuit.</p>
+
+<p>Derrière on met en place un système de ping qui va contrôler l&rsquo;état de l&rsquo;API jusqu&rsquo;à ce qu&rsquo;elle retourne un état positif et le système reprends son fonctionnement normal.</p>
+
+<p>Un Schéma complet du bordel:</p>
 
 
-  def get(region, path, params) do
-    build_url(region, path, params)
-    |&gt; HTTPoison.get!
-  end
 
 
-  defp process_params(params) do
-    params
-    |&gt; Keyword.merge([apikey: key()])
-    |&gt; URI.encode_query
-  end
+<div class="figure " >
+  
+    <img class="fig-img" src="http://sweetlie.today/images/complete_workflow.png"  alt="Complete Workflow">
+  
+   
+    <span class="caption">Complete Workflow</span>
+  
+</div>
 
-  defp build_url(region, path, params) do
-    &#34;https://&#34; &lt;&gt; region &lt;&gt; &#34;.api.battle.net/&#34; &lt;&gt;
-      path &lt;&gt; &#34;?&#34; &lt;&gt; process_params(params)
-  end
 
-  defp key do
-    System.get_env(&#34;BNET_API_KEY&#34;)
-  end
-end
-~~~</pre>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</figure></p>
+<p>J&rsquo;ai envisagé la possibilité d&rsquo;avoir plusieurs queues, même si ce n&rsquo;est pas vraiment à l&rsquo;ordre du jour.</p>
 
-<p>Bilan</p>
-
-<ul>
-<li>je me suis contenté de l&rsquo;essentiel / récupérer l&rsquo;url du snaphsot de l&rsquo;hv. Un bon moyen pour arrêter ma folie d&rsquo;overthink de l&rsquo;OO</li>
-<li>Pas de gestion d&rsquo;erreur ? Non. Tout le code est contenu dans un process indépendant s&rsquo;il doit crasher, il crashera. Ce sera le boulot du superviseur de le relancer. Je ne suis pas sûr que la gestion d&rsquo;erreur soit absente dans tous cas, mais se passer de quelque chose de chiant pour se poser la question comment s&rsquo;en relever en un minimum d&rsquo;effort c&rsquo;est très appréciable.</li>
-<li>Pas de test ? Même idée que pour les erreurs il y a en effet un test à faire est-ce que dans la situation ou ça marche j&rsquo;ai bien le résultat que j&rsquo;attends. Pas d&rsquo;edge case !</li>
-</ul>
-
-<p>C&rsquo;est très positif, le côté performance est actuellement bonus, mais je me dis que le bonus de pouvoir analyser de quantité importante de données en quelques secondes en lançant plein de serveurs virtuels à la demande et laisser un serveur cheap se charger de servir les données aux clients c&rsquo;est définitivement un truc que j&rsquo;aimerais tester !</p>
-
-<p>Au programme de la suite le superviseur.</p>
+<p>OK prochaine étape une implémentation solide de tout ça.</p>
 
               
             </div>
@@ -309,7 +292,7 @@ end
       
         <li class="post-action">
           
-            <a class="post-action-btn btn btn--default tooltip--top" href="http://sweetlie.today/2017/05/r%C3%A9glage-de-la-pression-arri%C3%A8re/" data-tooltip="Réglage de la pression arrière">
+            <a class="post-action-btn btn btn--disabled">
           
             <i class="fa fa-angle-left"></i>
             <span class="hide-xs hide-sm text-small icon-ml">SUIVANT</span>
@@ -317,7 +300,7 @@ end
         </li>
         <li class="post-action">
           
-            <a class="post-action-btn btn btn--disabled">
+            <a class="post-action-btn btn btn--default tooltip--top" href="http://sweetlie.today/2017/05/r%C3%A9cup%C3%A9ration-des-donn%C3%A9es-de-lh%C3%B4tel-des-ventes-partie-1/" data-tooltip="Récupération des données de l&#39;hôtel des ventes, Partie 1">
           
             <span class="hide-xs hide-sm text-small icon-mr">PRÉCÉDENT</span>
             <i class="fa fa-angle-right"></i>
@@ -334,17 +317,17 @@ end
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http%3a%2f%2fsweetlie.today%2f2017%2f05%2fr%25C3%25A9cup%25C3%25A9ration-des-donn%25C3%25A9es-de-lh%25C3%25B4tel-des-ventes-partie-1%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http%3a%2f%2fsweetlie.today%2f2017%2f05%2fr%25C3%25A9glage-de-la-pression-arri%25C3%25A8re%2f">
           <i class="fa fa-google-plus"></i>
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fsweetlie.today%2f2017%2f05%2fr%25C3%25A9cup%25C3%25A9ration-des-donn%25C3%25A9es-de-lh%25C3%25B4tel-des-ventes-partie-1%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fsweetlie.today%2f2017%2f05%2fr%25C3%25A9glage-de-la-pression-arri%25C3%25A8re%2f">
           <i class="fa fa-facebook-official"></i>
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http%3a%2f%2fsweetlie.today%2f2017%2f05%2fr%25C3%25A9cup%25C3%25A9ration-des-donn%25C3%25A9es-de-lh%25C3%25B4tel-des-ventes-partie-1%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http%3a%2f%2fsweetlie.today%2f2017%2f05%2fr%25C3%25A9glage-de-la-pression-arri%25C3%25A8re%2f">
           <i class="fa fa-twitter"></i>
         </a>
       </li>
@@ -382,7 +365,7 @@ end
       
         <li class="post-action">
           
-            <a class="post-action-btn btn btn--default tooltip--top" href="http://sweetlie.today/2017/05/r%C3%A9glage-de-la-pression-arri%C3%A8re/" data-tooltip="Réglage de la pression arrière">
+            <a class="post-action-btn btn btn--disabled">
           
             <i class="fa fa-angle-left"></i>
             <span class="hide-xs hide-sm text-small icon-ml">SUIVANT</span>
@@ -390,7 +373,7 @@ end
         </li>
         <li class="post-action">
           
-            <a class="post-action-btn btn btn--disabled">
+            <a class="post-action-btn btn btn--default tooltip--top" href="http://sweetlie.today/2017/05/r%C3%A9cup%C3%A9ration-des-donn%C3%A9es-de-lh%C3%B4tel-des-ventes-partie-1/" data-tooltip="Récupération des données de l&#39;hôtel des ventes, Partie 1">
           
             <span class="hide-xs hide-sm text-small icon-mr">PRÉCÉDENT</span>
             <i class="fa fa-angle-right"></i>
@@ -407,17 +390,17 @@ end
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http%3a%2f%2fsweetlie.today%2f2017%2f05%2fr%25C3%25A9cup%25C3%25A9ration-des-donn%25C3%25A9es-de-lh%25C3%25B4tel-des-ventes-partie-1%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http%3a%2f%2fsweetlie.today%2f2017%2f05%2fr%25C3%25A9glage-de-la-pression-arri%25C3%25A8re%2f">
           <i class="fa fa-google-plus"></i>
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fsweetlie.today%2f2017%2f05%2fr%25C3%25A9cup%25C3%25A9ration-des-donn%25C3%25A9es-de-lh%25C3%25B4tel-des-ventes-partie-1%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fsweetlie.today%2f2017%2f05%2fr%25C3%25A9glage-de-la-pression-arri%25C3%25A8re%2f">
           <i class="fa fa-facebook-official"></i>
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http%3a%2f%2fsweetlie.today%2f2017%2f05%2fr%25C3%25A9cup%25C3%25A9ration-des-donn%25C3%25A9es-de-lh%25C3%25B4tel-des-ventes-partie-1%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http%3a%2f%2fsweetlie.today%2f2017%2f05%2fr%25C3%25A9glage-de-la-pression-arri%25C3%25A8re%2f">
           <i class="fa fa-twitter"></i>
         </a>
       </li>
@@ -438,17 +421,17 @@ end
       <div id="share-options-bar" class="share-options-bar" data-behavior="2">
   <ul class="share-options">
     <li class="share-option">
-      <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http%3a%2f%2fsweetlie.today%2f2017%2f05%2fr%25C3%25A9cup%25C3%25A9ration-des-donn%25C3%25A9es-de-lh%25C3%25B4tel-des-ventes-partie-1%2f">
+      <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http%3a%2f%2fsweetlie.today%2f2017%2f05%2fr%25C3%25A9glage-de-la-pression-arri%25C3%25A8re%2f">
         <i class="fa fa-google-plus"></i><span>Partager sur Google Plus</span>
       </a>
     </li>
     <li class="share-option">
-      <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fsweetlie.today%2f2017%2f05%2fr%25C3%25A9cup%25C3%25A9ration-des-donn%25C3%25A9es-de-lh%25C3%25B4tel-des-ventes-partie-1%2f">
+      <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fsweetlie.today%2f2017%2f05%2fr%25C3%25A9glage-de-la-pression-arri%25C3%25A8re%2f">
         <i class="fa fa-facebook-official"></i><span>Partager sur Facebook</span>
       </a>
     </li>
     <li class="share-option">
-      <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http%3a%2f%2fsweetlie.today%2f2017%2f05%2fr%25C3%25A9cup%25C3%25A9ration-des-donn%25C3%25A9es-de-lh%25C3%25B4tel-des-ventes-partie-1%2f">
+      <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http%3a%2f%2fsweetlie.today%2f2017%2f05%2fr%25C3%25A9glage-de-la-pression-arri%25C3%25A8re%2f">
         <i class="fa fa-twitter"></i><span>Partager sur Twitter</span>
       </a>
     </li>

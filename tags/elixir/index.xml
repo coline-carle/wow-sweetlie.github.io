@@ -6,10 +6,19 @@
     <description>Recent content in Elixir on Sweet Code Dream</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>fr-FR</language>
-    <lastBuildDate>Fri, 12 May 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 24 May 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://sweetlie.today/tags/elixir/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Réglage de la pression arrière</title>
+      <link>http://sweetlie.today/2017/05/r%C3%A9glage-de-la-pression-arri%C3%A8re/</link>
+      <pubDate>Wed, 24 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://sweetlie.today/2017/05/r%C3%A9glage-de-la-pression-arri%C3%A8re/</guid>
+      <description>Dans mes applications très dépendantes de l&amp;rsquo;API Battle.net, j&amp;rsquo;ai une problématique importante: La limitation des requête, que ce soit la limite imposée par la société, la congestion du réseau où la non disponibilité du service. Grosso merdo un processus qui dit non, repasse plus tard, où attends un peu. Mine de rien le problème n&amp;rsquo;est pas si simple que ça j&amp;rsquo;ai beaucoup entendu le terme &amp;ldquo;backpressure&amp;rdquo;, certainement en référence à l&amp;rsquo;algorithme de routage backpressure, j&amp;rsquo;y pige pas grand-chose, mais la page Wikipédia est bien fournie, probablement un abus de langage, mais ça peut donner une approche de l&amp;rsquo;idée et surtout le concept qui va nous intéresser : les queues.</description>
+    </item>
     
     <item>
       <title>Récupération des données de l&#39;hôtel des ventes, Partie 1</title>
