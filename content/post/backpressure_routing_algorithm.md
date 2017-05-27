@@ -4,7 +4,7 @@ tags = ["elixir", "warcraft"]
 title = "Réglage de la pression arrière"
 +++
 
-Dans mes applications très dépendantes de l'API Battle.net, j'ai une problématique importante: La limitation des requête, que ce soit la limite imposée par la société, la congestion du réseau où la non disponibilité du service. Grosso merdo un processus qui dit non, repasse plus tard, où attends un peu. Mine de rien le problème n'est pas si simple que ça j'ai beaucoup entendu le terme "backpressure", certainement en référence à l'algorithme de routage *[backpressure]*, j'y pige pas grand-chose, mais la page Wikipédia est bien fournie, probablement un abus de langage, mais ça peut donner une approche de l'idée et surtout le concept qui va nous intéresser : les queues.
+Dans mes applications très dépendantes de l'API Battle.net, j'ai une problématique importante: La limitation du nombre de requêtes, qu'elle soit imposée par la société, la congestion du réseau où la non disponibilité du service. Grosso merdo un processus qui dit non, repasse plus tard, où attends un peu. Mine de rien le problème n'est pas si simple que ça j'ai beaucoup entendu le terme *backpressure*, certainement en référence à l'algorithme de routage *[backpressure]*, j'y pige pas grand-chose, mais la page Wikipédia est bien fournie, probablement un abus de langage, mais ça peut donner une approche de l'idée et surtout du concept qui va nous intéresser : les queues.
 
 Voici un schéma sommaire de l'architecture, on reste dans le contexte erlang, avec des processus indépendants, mais un peu de multi threading revient à la même idée.
 
