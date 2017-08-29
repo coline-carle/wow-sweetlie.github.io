@@ -18,7 +18,7 @@ jobs:
       - run: git config --global user.email "circle-ci@circle-ci.org"
       - run: echo "sweetlie.today" > "$GIT_DEPLOY_DIR/CNAME"
       - run: mkdir public/.circleci
-      - run: curl -o public/.cicleci/config.yml https://raw.githubusercontent.com/wow-sweetlie/wow-sweetlie.github.io/source/.circleci/config.yml
+      - run: curl -o public/.circleci/config.yml https://raw.githubusercontent.com/wow-sweetlie/wow-sweetlie.github.io/source/.circleci/config.yml
       - run: cur -O https://raw.githubusercontent.com/X1011/git-directory-deploy/master/deploy.sh
       - run: chmod +x deploy.sh
 
