@@ -1,0 +1,38 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: golang:1.8.0
+    branches:
+      only:
+        - source
+    working_directory: ~/blog
+    environment:
+      GIT_DEPLOY_DIR: public
+      GIT_DEPLOY_BRANCH: master
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - go-cache
+      - run: go get -v github.com/spf13/hugo
+      - save_cache:
+          key: hugo-cache
+          paths: /go
+      - run: hugo
+      - run: git config --global user.name "circle-ci"
+      - run: git config --global user.email "circle-ci@circle-ci.org"
+      - run: echo "sweetlie.today" > "$GIT_DEPLOY_DIR/CNAME"
+      - run: mkdir public/.circleci
+      - run: curl -o public/.circleci/config.yml https://raw.githubusercontent.com/wow-sweetlie/wow-sweetlie.github.io/source/.circleci/config.yml
+      - run: curl -O https://raw.githubusercontent.com/X1011/git-directory-deploy/master/deploy.sh
+      - run: chmod +x deploy.sh
+
+      - add_ssh_keys:
+          fingerprints: "96:84:40:4a:92:1e:e7:72:5e:a9:b6:77:dc:89:96:d1"
+      - deploy:
+          name: "deploy to github pages"
+          command: ./deploy.sh
+
+
+
