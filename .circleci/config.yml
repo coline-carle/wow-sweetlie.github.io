@@ -17,8 +17,8 @@ jobs:
             - go-cache
       - run: go get -v github.com/spf13/hugo
       - save_cache:
-        key: hugo-cache
-        paths: /go
+          key: hugo-cache
+          paths: /go
       - run: hugo
       - run: git config --global user.name "circle-ci"
       - run: git config --global user.email "circle-ci@circle-ci.org"
